@@ -1,0 +1,86 @@
+name: StaffCommunication
+author: FishbirdDD
+description: Allow your staff members to communicate easier on your server!
+version: BETA-2.0.0
+main: com.fishbirddd.staffcommunication.StaffCommunication 
+
+commands:
+  staffchat:
+    description: Use the staff chat
+    aliases: [sc]
+    usage: /staffchat <message>
+  adminchat:
+    description: Use the admin chat
+    aliases: [ac]
+    usage: /adminchat <message>
+  broadcast:
+    description: Send a message to everyone on the server
+    aliases: [bc]
+    usage: /broadcast <message>
+  staffbroadcast:
+    description: Send a message to all staff on the server
+    aliases: [sbc, staffbc]
+    usage: /staffbroadcast <message>
+  adminbroadcast:
+    description: Send a message to all admins on the server
+    aliases: [abc, adminbc]
+    usage: /adminbroadcast <message>
+  staffmessage:
+    description: Send an anonymous message to a player
+    aliases: [smsg, staffmsg]
+    usage: /staffmessage <player> <message>
+  sctoggle:
+    description: Toggle the staff chat
+    usage: /sctoggle
+  actoggle:
+    description: Toggle the admin chat
+    usage: /actoggle
+  staffcommunication:
+    description: Reload the plugin or check the version
+
+permissions:
+  staffcommunication.reload:
+    description: Reload the config
+    default: op
+  staffcommunication.version:
+    description: Check the version of the plugin 
+    default: op
+  staffcommunication.sc.use:
+    description: Use the staff chat
+    default: op
+  staffcommunication.sc.see:
+    description: See the staff chat
+    default: op
+  staffcommunication.sc.toggle:
+    description: Toggle staff chat
+    default: op
+  staffcommunication.ac.use:
+    description: Use the staff chat
+    default: op
+  staffcommunication.ac.see:
+    description: See the staff chat
+    default: op
+  staffcommunication.ac.toggle:
+    description: Toggle admin chat
+    default: op
+  staffcommunication.bc.use:
+    description: Make a broadcast
+    default: op
+  staffcommunication.bc.see:
+    description: See broadcasts
+    default: true
+  staffcommunication.sbc.use:
+    description: Make a staff broadcast
+    default: op
+  staffcommunication.sbc.see:
+    description: See staff broadcasts
+    default: op
+  staffcommunication.abc.use:
+    description: Make an admin broadcast
+    default: op
+  staffcommunication.abc.see:
+    description: See admin broadcasts
+    default: op
+  staffcommunication.smsg:
+    description: Send a staff message (one way message)
+    default: op

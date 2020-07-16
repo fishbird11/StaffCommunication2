@@ -1,0 +1,37 @@
+# StaffCommunication2 By FishbirdDD
+
+# ========= PLEASE READ ========= #
+# If you are unsure of the purpose of any part of this config, you can go to the spigot 
+# page and find the link to my wiki.
+# If you are sill unsure, you can join my support discord here: discord.gg/e2Hdh97
+# (link on spigot page if that doesn't work)
+# =============================== #
+
+# Modify all of the messages in the plugin
+messages:
+  chats:
+    staff: "&8[&bStaffChat&8] &d%player%: &b%message%"
+    admin: "&8[&cAdminChat&8] &d%player%: &c%message%"
+  broadcasts:
+    server: "&6Broadcast > %message%"
+    staff: "&bStaff Broadcast > %message%"
+    admin: "&cAdmin Broadcast > %message%"
+  staffmessage:
+    receiver: "&a[Admin > You] %message%"
+    sender: "&aMessage &7%message% &asent successfully"
+  errors:
+    permission: "&cYou do not have permission to use this command"
+    usage: "&cUsage: %usage%"
+    player: "&cThat player is not online"
+  reload: "&aStaffCommunication %version% > configuration reloaded"
+  version: "&aStaffCommunication %version% By FishbirdDD"
+
+settings:
+  # Output debug messages in console 
+  # NOTE: This feature will do nothing until release 2.0.0
+  debug: false
+
+# === DO NOT EDIT ANYTHING BELOW THIS LINE === #
+
+do-not-edit:
+  config-version: 0
