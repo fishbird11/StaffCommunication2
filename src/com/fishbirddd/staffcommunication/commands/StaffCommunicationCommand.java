@@ -24,6 +24,14 @@ public class StaffCommunicationCommand implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		
+		if (command.getName().equals("sctoggle") || command.getName().equals("actoggle")) {
+			
+			sender.sendMessage(ChatColor.RED + "This command is not available in the beta version of the plugin. It will be added in the official release.");
+			
+			return true;
+			
+		}
+		
 		if (args.length >= 1) {
 			
 			if (args[0].equals("version")) {
@@ -56,19 +64,13 @@ public class StaffCommunicationCommand implements CommandExecutor {
 			
 		}
 		
-		if (command.getName().equals("sctoggle") || command.getName().equals("actoggle")) {
-			
-			sender.sendMessage(ChatColor.RED + "This command is not available in the beta version of the plugin. It will be added in the official release.");
-			
-		}
-		
 		return true;
 		
 	}
 	
 	private void sendUsageError(CommandSender sender) {
 		
-		sender.sendMessage(config.getString("messages.errors.usage").replaceAll("%usage%", "/staffcommunication <version|reload>"));
+		sender.sendMessage(GeneralMethods.colorize(config.getString("messages.errors.usage").replaceAll("%usage%", "/staffcommunication <version|reload>")));
 		
 	}
 	
