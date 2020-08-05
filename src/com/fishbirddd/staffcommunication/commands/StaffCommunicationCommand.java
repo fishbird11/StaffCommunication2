@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.fishbirddd.staffcommunication.StaffCommunication;
+import com.fishbirddd.staffcommunication.UpgradeConfig;
 import com.fishbirddd.staffcommunication.utils.GeneralMethods;
 
 public class StaffCommunicationCommand implements CommandExecutor {
@@ -49,6 +50,7 @@ public class StaffCommunicationCommand implements CommandExecutor {
 					sender.sendMessage(GeneralMethods.colorize(config.getString("messages.reload").replaceAll("%version%", StaffCommunication.VERSION)));
 					plugin.reloadConfig();
 					StaffCommunication.setVars();
+					new UpgradeConfig();
 					
 				}
 				

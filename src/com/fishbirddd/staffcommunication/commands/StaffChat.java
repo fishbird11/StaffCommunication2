@@ -8,7 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fishbirddd.staffcommunication.ChatType;
+import com.fishbirddd.staffcommunication.StaffCommunication;
 import com.fishbirddd.staffcommunication.events.StaffCommunicationChatEvent;
+import com.fishbirddd.staffcommunication.exceptions.InvalidChatTypeException;
 import com.fishbirddd.staffcommunication.utils.Errors;
 import com.fishbirddd.staffcommunication.utils.GeneralMethods;
 
@@ -39,8 +41,25 @@ public class StaffChat implements CommandExecutor {
 				
 			} else {
 				
-				Errors.sendUsageError(player, "/sc <message>");
+				if (StaffCommunication.getInstance().getConfig().getBoolean("settings.toggle-with-no-message")) {
+					
+					try {
+						
+						StaffCommunication.getInstance().toggleChat(ChatType.STAFF_CHAT, player);
+						
+					} catch (InvalidChatTypeException e) {
+						
+
+						e.printStackTrace();
+						
+					}
+					
+				} else {
 				
+					Errors.sendUsageError(player, "/sc <message>");
+				
+				}
+					
 			}
 			
 		} else {

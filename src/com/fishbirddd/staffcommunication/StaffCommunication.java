@@ -1,8 +1,12 @@
 package com.fishbirddd.staffcommunication;
 
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.fishbirddd.staffcommunication.api.IStaffCommunication;
 import com.fishbirddd.staffcommunication.commands.AdminBroadcast;
 import com.fishbirddd.staffcommunication.commands.AdminChat;
 import com.fishbirddd.staffcommunication.commands.Broadcast;
@@ -10,15 +14,27 @@ import com.fishbirddd.staffcommunication.commands.StaffBroadcast;
 import com.fishbirddd.staffcommunication.commands.StaffChat;
 import com.fishbirddd.staffcommunication.commands.StaffCommunicationCommand;
 import com.fishbirddd.staffcommunication.commands.StaffMessage;
+import com.fishbirddd.staffcommunication.commands.Toggles;
+import com.fishbirddd.staffcommunication.exceptions.InvalidChatTypeException;
+import com.fishbirddd.staffcommunication.listeners.ChatSend;
 import com.fishbirddd.staffcommunication.utils.Errors;
 import com.fishbirddd.staffcommunication.utils.GeneralMethods;
 
-public class StaffCommunication extends JavaPlugin {
+public final class StaffCommunication extends JavaPlugin implements IStaffCommunication {
 
 	private static StaffCommunication instance;
-	public static final String VERSION = "BETA-2.0.0";
-	public static final int CONFIG_VERSION = 0;
+	public static final String VERSION = "Release-2.0.0";
+	public static final int CONFIG_VERSION = 1;
+	public static HashMap<Player, ChatType> chatToggled = new HashMap<>();
 	
+	/**
+	 * 
+	 * Please use StaffCommunication.getInstance() instead of the constructor
+	 * 
+	 */
+	public StaffCommunication() {}
+	
+	@Override
 	public void onEnable() {
 		
 		saveDefaultConfig();
@@ -26,6 +42,30 @@ public class StaffCommunication extends JavaPlugin {
 		instance = this;
 		setVars();
 		new UpgradeConfig();
+		getServer().getPluginManager().registerEvents(new ChatSend(), this);
+		
+	}
+	
+	@Override
+	public void onDisable() {
+		
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			
+			if (chatToggled.containsKey(p)) {
+				
+				try {
+					
+					this.toggleChat(chatToggled.get(p), p);
+					
+				} catch (InvalidChatTypeException e) {
+					
+					e.printStackTrace();
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 	
@@ -38,8 +78,8 @@ public class StaffCommunication extends JavaPlugin {
 		getCommand("adminbroadcast")	 .setExecutor(new AdminBroadcast());
 		getCommand("staffmessage")   	 .setExecutor(new StaffMessage());
 		getCommand("staffcommunication") .setExecutor(new StaffCommunicationCommand());
-		getCommand("sctoggle")           .setExecutor(new StaffCommunicationCommand());
-		getCommand("actoggle")           .setExecutor(new StaffCommunicationCommand());
+		getCommand("sctoggle")           .setExecutor(new Toggles());
+		getCommand("actoggle")           .setExecutor(new Toggles());
 		
 	}
 	
@@ -55,10 +95,12 @@ public class StaffCommunication extends JavaPlugin {
 		GeneralMethods 			  .setVars();
 		UpgradeConfig  			  .setVars();
 		StaffCommunicationCommand .setVars();
+		Toggles                   .setVars();
 		
 	}
 	
-	public static void simulateChat(ChatType chatType, Player player, String message) {
+	@Override
+	public void simulateChat(ChatType chatType, Player player, String message) {
 		
 		switch (chatType) {
 		
@@ -84,10 +126,21 @@ public class StaffCommunication extends JavaPlugin {
 			break;
 		
 		}
+		
+		// Debug
+		
+		if (this.debugEnabled()) {
+			
+			Bukkit.getLogger().info("A plugin has attempted to simulate a chat message for type " + chatType.toString() 
+				+ ", player " + player.getName() 
+				+ ", and message \"" + message + "\"");
+			
+		}
 		 
 	}
 	
-	public static void simulateChat(ChatType chatType, Player player, Player receiver, String message) {
+	@Override
+	public void simulateChat(ChatType chatType, Player player, Player receiver, String message) {
 		
 		if (chatType.equals(ChatType.STAFF_MESSAGE)) {
 			
@@ -99,7 +152,58 @@ public class StaffCommunication extends JavaPlugin {
 			new StaffMessage().onCommand(player, instance.getCommand("smsg"), "smsg", args);
 			
 		}
+		
+		// Debug
+		
+		if (this.debugEnabled()) {
+			
+			Bukkit.getLogger().info("A plugin has attempted to simulate a chat message for type " + chatType.toString() 
+				+ ", player " + player.getName() 
+				+ ", receiver " + receiver.getName()
+				+ ", and message \"" + message + "\"");
+			
+		}
 		 
+	}
+
+	@Override
+	public ChatType getToggledChat(Player player) {
+		
+		return StaffCommunication.chatToggled.get(player);
+		
+	}
+	
+	@Override
+	public void toggleChat(ChatType chatType, Player player) throws InvalidChatTypeException {
+		
+		switch (chatType) {
+		
+		case STAFF_CHAT:
+			new Toggles().onCommand(player, instance.getCommand("sctoggle"), "sctoggle", new String[0]);
+			break;
+		case ADMIN_CHAT:
+			new Toggles().onCommand(player, instance.getCommand("actoggle"), "actoggle", new String[0]);
+			break;
+		default:
+			throw new InvalidChatTypeException(chatType);
+		
+		}
+		
+		// Debug
+		
+		if (this.debugEnabled()) {
+			
+			Bukkit.getLogger().info("A plugin has attempted to toggle " + chatType.toString() + " for player " + player.getName());
+			
+		}
+		
+	}
+	
+	@Override
+	public boolean debugEnabled() {
+		
+		return getConfig().getBoolean("settings.debug");
+		
 	}
 	
 }
