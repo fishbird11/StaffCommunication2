@@ -35,7 +35,6 @@ messages:
 
 settings:
   # Output debug messages in console 
-  # NOTE: This feature will do nothing until release 2.0.0
   debug: false
   # Should /ac or /sc with no message behave the same
   # as /sctoggle or /actoggle
