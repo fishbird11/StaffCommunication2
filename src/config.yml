@@ -23,6 +23,13 @@ messages:
     permission: "&cYou do not have permission to use this command"
     usage: "&cUsage: %usage%"
     player: "&cThat player is not online"
+  toggles:
+    staff:
+      enable: "&aEnabled staff chat"
+      disable: "&cDisabled staff chat"
+    admin:
+      enable: "&aEnabled admin chat"
+      disable: "&cDisabled admin chat"
   reload: "&aStaffCommunication %version% > configuration reloaded"
   version: "&aStaffCommunication %version% By FishbirdDD"
 
@@ -30,8 +37,11 @@ settings:
   # Output debug messages in console 
   # NOTE: This feature will do nothing until release 2.0.0
   debug: false
+  # Should /ac or /sc with no message behave the same
+  # as /sctoggle or /actoggle
+  toggle-with-no-message: false
 
 # === DO NOT EDIT ANYTHING BELOW THIS LINE === #
 
 do-not-edit:
-  config-version: 0
+  config-version: 1
