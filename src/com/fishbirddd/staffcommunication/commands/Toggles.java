@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.fishbirddd.staffcommunication.ChatType;
 import com.fishbirddd.staffcommunication.StaffCommunication;
+import com.fishbirddd.staffcommunication.utils.Errors;
 import com.fishbirddd.staffcommunication.utils.GeneralMethods;
 
 public class Toggles implements CommandExecutor {
@@ -30,60 +31,76 @@ public class Toggles implements CommandExecutor {
 			
 			if (cmd.getName().equals("sctoggle")) {
 				
-				ChatType toggledChat = plugin.getToggledChat(player);
+				if (player.hasPermission("staffcommunication.sc.toggle")) {
 				
-				boolean toggled = toggledChat != null && toggledChat.equals(ChatType.STAFF_CHAT);
+					ChatType toggledChat = plugin.getToggledChat(player);
+					
+					boolean toggled = toggledChat != null && toggledChat.equals(ChatType.STAFF_CHAT);
+					
+					if (toggled) {
+						
+						StaffCommunication.chatToggled.remove(player);
+						
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.disable")));
+						
+					} else if (toggledChat == null) {
+						
+						StaffCommunication.chatToggled.put(player, ChatType.STAFF_CHAT);
+						
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.enable")));
+						
+					} else if (toggledChat.equals(ChatType.ADMIN_CHAT)) {
+						
+						StaffCommunication.chatToggled.put(player, ChatType.STAFF_CHAT);
+						
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.disable")));
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.enable")));
+						
+					}
 				
-				if (toggled) {
+				} else {
 					
-					StaffCommunication.chatToggled.remove(player);
-					
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.disable")));
-					
-				} else if (toggledChat == null) {
-					
-					StaffCommunication.chatToggled.put(player, ChatType.STAFF_CHAT);
-					
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.enable")));
-					
-				} else if (toggledChat.equals(ChatType.ADMIN_CHAT)) {
-					
-					StaffCommunication.chatToggled.put(player, ChatType.STAFF_CHAT);
-					
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.disable")));
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.enable")));
+					Errors.sendPermissionError(player);
 					
 				}
-				
+					
 			} else if (cmd.getName().equals("actoggle")) {
 				
-				ChatType toggledChat = plugin.getToggledChat(player);
+				if (player.hasPermission("staffcommunication.ac.toggle")) {
 				
-				boolean toggled = toggledChat != null && toggledChat.equals(ChatType.ADMIN_CHAT);
-				
-				if (toggled) {
+					ChatType toggledChat = plugin.getToggledChat(player);
 					
-					StaffCommunication.chatToggled.remove(player);
+					boolean toggled = toggledChat != null && toggledChat.equals(ChatType.ADMIN_CHAT);
 					
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.disable")));
-					
-				} else if (toggledChat == null) {
-					
-					StaffCommunication.chatToggled.put(player, ChatType.ADMIN_CHAT);
-					
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.enable")));
-					
-				} else if (toggledChat.equals(ChatType.STAFF_CHAT)) {
-					
-					StaffCommunication.chatToggled.put(player, ChatType.ADMIN_CHAT);
-					
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.disable")));
-					player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.enable")));
+					if (toggled) {
+						
+						StaffCommunication.chatToggled.remove(player);
+						
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.disable")));
+						
+					} else if (toggledChat == null) {
+						
+						StaffCommunication.chatToggled.put(player, ChatType.ADMIN_CHAT);
+						
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.enable")));
+						
+					} else if (toggledChat.equals(ChatType.STAFF_CHAT)) {
+						
+						StaffCommunication.chatToggled.put(player, ChatType.ADMIN_CHAT);
+						
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.staff.disable")));
+						player.sendMessage(GeneralMethods.colorize(config.getString("messages.toggles.admin.enable")));
+						
+					}
 					
 				}
+		
+			} else {
+				
+				Errors.sendPermissionError(player);
 				
 			}
-		
+			
 		}
 			
 		return true;

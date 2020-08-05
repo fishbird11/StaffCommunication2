@@ -20,20 +20,20 @@ public interface IStaffCommunication {
 	
 	/* ================================================================= */
 	
-    /**
-     * 
-     * Simulates a chat message of the type STAFF_MESSAGE
-     * 
-     * @param chatType - The type of chat
-     * @param player - The player who sent the message
-     * @param receiver - The player receiving the chat
-     * @param message - The message
-     * 
-     * @return void
-     * 
-     * @since Release 2.0.0
-     * 
-     */
+	/**
+	 * 
+	 * Simulates a chat message of the type STAFF_MESSAGE
+	 * 
+	 * @param chatType - The type of chat
+	 * @param player - The player who sent the message
+	 * @param receiver - The player receiving the chat
+	 * @param message - The message
+	 * 
+	 * @return void
+	 * 
+	 * @since Release 2.0.0
+	 * 
+	 */
 	public void simulateChat(ChatType chatType, Player player, Player receiver, String message);
 	
 	/**
